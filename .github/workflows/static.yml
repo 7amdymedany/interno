@@ -1,4 +1,4 @@
-name: Deploy React App to GitHub Pages
+name: Deploy Static HTML to GitHub Pages
 
 on:
   push:
@@ -24,8 +24,16 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
       - name: Install dependencies
         run: npm install
+
+      - name: Fix permissions
+        run: chmod +x node_modules/.bin/tailwindcss
 
       - name: Build project
         run: npm run build
@@ -36,7 +44,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: 'build'
+          path: 'dist'
 
       - name: Deploy to GitHub Pages
         id: deployment
